@@ -14,7 +14,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   await deploy("Staker", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
-    args: [exampleExternalContract.address, process.DEADLINE || 30],
+    args: [exampleExternalContract.address, process.env.DEADLINE || 30],
     log: true,
   });
 
