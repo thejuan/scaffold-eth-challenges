@@ -75,9 +75,9 @@ uint256 public constant threshold = 1 ether;
 
 #### 🥅 Goals
 
-- [ ] Do you see the balance of the `Staker` contract go up when you `stake()`?
-- [ ] Is your `balance` correctly tracked?
-- [ ] Do you see the events in the `Staker UI` tab?
+- [X] Do you see the balance of the `Staker` contract go up when you `stake()`?
+- [X] Is your `balance` correctly tracked?
+- [X] Do you see the events in the `Staker UI` tab?
 
 
 ---
@@ -110,9 +110,9 @@ If the balance is less than the `threshold`, you want to set a `openForWithdraw`
 > 👩‍💻 You can call `yarn deploy --reset` any time you want a fresh contract
 
 #### 🥅 Goals
-- [ ] Can you see `timeLeft` counting down in the `Staker UI` tab when you trigger a transaction with the faucet?
-- [ ] If you `stake()` enough ETH before the `deadline`, does it call `complete()`?
-- [ ] If you don't `stake()` enough can you `withdraw(address payable)` your funds?
+- [X] Can you see `timeLeft` counting down in the `Staker UI` tab when you trigger a transaction with the faucet?
+- [X] If you `stake()` enough ETH before the `deadline`, does it call `complete()`?
+- [X] If you don't `stake()` enough can you `withdraw(address payable)` your funds?
 
 
 ---
@@ -126,14 +126,17 @@ If the balance is less than the `threshold`, you want to set a `openForWithdraw`
 
 ---
 #### 🥅 Goals
-- [ ] If you send ETH directly to the contract address does it update your `balance`?
+- [X] If you send ETH directly to the contract address does it update your `balance`?
 
 ---
 
 ## ⚔️ Side Quests
-- [ ] Can execute get called more than once, and is that okay?
-- [ ] Can you stake and withdraw freely after the `deadline`, and is that okay?
+- [X] Can execute get called more than once, and is that okay? 
+Yes, updates
+- [X] Can you stake and withdraw freely after the `deadline`, and is that okay?
+No
 - [ ] What are other implications of *anyone* being able to withdraw for someone?
+Dont get this, withdrawer can withdraw stake to any address, not sure why this a problem
 
 ---
 

@@ -9,19 +9,23 @@ contract Staker {
     mapping(address => uint256) public balances;
     event Stake(address indexed sender, uint256 balance);
     uint256 public constant threshold = 1 ether;
-    uint256 public deadline = block.timestamp + 30 seconds;
-    bool public completed = false;
+    uint256 public deadline;
+    bool public executed;
 
-    constructor(address exampleExternalContractAddress) {
+    constructor(
+        address exampleExternalContractAddress,
+        uint256 openWindowSeconds
+    ) {
         exampleExternalContract = ExampleExternalContract(
             exampleExternalContractAddress
         );
+        deadline = block.timestamp + openWindowSeconds;
     }
 
     //  Collect funds in a payable `stake()` function and track individual `balances` with a mapping:
     //  ( make sure to add a `Stake(address,uint256)` event and emit it for the frontend <List/> display )
     function stake() public payable {
-        require(!completed, "Contract completed");
+        require(!executed, "Contract executed");
         balances[msg.sender] = balances[msg.sender] + msg.value;
         emit Stake(msg.sender, balances[msg.sender]);
     }
@@ -31,15 +35,17 @@ contract Staker {
     // if the `threshold` was not met, allow everyone to call a `withdraw()` function
     function execute() public payable {
         require(timeLeft() <= 0, "Deadline not reached");
+        require(!executed, "Already executed");
+         executed = true;
         if (address(this).balance >= threshold) {
             exampleExternalContract.complete{value: address(this).balance}();
         }
-        completed = true;
+       
     }
 
     // Add a `withdraw(address payable)` function lets users withdraw their balance
     function withdraw(address to) public {
-        require(completed, "Not Completed, call execute");
+        require(executed, "Not executed, call execute");
         require(address(this).balance < threshold, "Threshold reached");
 
         (bool sent, bytes memory data) = to.call{value: balances[msg.sender]}(
@@ -56,6 +62,8 @@ contract Staker {
 
         return deadline - block.timestamp;
     }
+
+
 
     // Add the `receive()` special function that receives eth and calls stake()
     receive() external payable {
