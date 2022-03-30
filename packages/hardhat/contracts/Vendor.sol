@@ -7,6 +7,11 @@ import "./YourToken.sol";
 contract Vendor is Ownable {
     uint256 public constant tokensPerEth = 100;
     event BuyTokens(address buyer, uint256 amountOfETH, uint256 amountOfTokens);
+    event SellTokens(
+        address buyer,
+        uint256 amountOfETH,
+        uint256 amountOfTokens
+    );
     YourToken public yourToken;
 
     constructor(address tokenAddress) {
@@ -20,9 +25,21 @@ contract Vendor is Ownable {
     }
 
     function withdraw() public payable onlyOwner {
-        (bool sent, bytes memory data) = owner().call{value: address(this).balance }("");
+        (bool sent, bytes memory data) = owner().call{
+            value: address(this).balance
+        }("");
         require(sent, "Failed to send Ether");
     }
 
-    // ToDo: create a sellTokens() function:
+    function sellTokens(uint256 tokenAmount) public payable {
+        require(
+            yourToken.transferFrom(msg.sender, address(this), tokenAmount),
+            "Sell failed"
+        );
+
+        uint256 eth = tokenAmount / tokensPerEth;
+        (bool sent, bytes memory data) = msg.sender.call{value: eth}("");
+        require(sent, "Failed to send Ether");
+        emit SellTokens(msg.sender, eth, tokenAmount);
+    }
 }
