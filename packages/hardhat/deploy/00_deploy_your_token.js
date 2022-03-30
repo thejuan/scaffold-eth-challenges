@@ -10,18 +10,16 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   await deploy("YourToken", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
-    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+   // args: [process.env.OWNER],
     log: true,
   });
 
   const yourToken = await ethers.getContract("YourToken", deployer);
-
-  // Todo: transfer tokens to frontend address
-  // const result = await yourToken.transfer("0x18fFE4dADcCe63A074Ef9cfe327cAb9AD4Ad9f76", ethers.utils.parseEther("1000") );
+   //const result = await yourToken.transfer("0x3cBdbb57A592E2Ac18947983928b99E5A35fFc58", ethers.utils.parseEther("1000") );
 
   // ToDo: To take ownership of yourContract using the ownable library uncomment next line and add the
   // address you want to be the owner.
-  // yourContract.transferOwnership(YOUR_ADDRESS_HERE);
+  // yourContract.transferOwnership("0x3cBdbb57A592E2Ac18947983928b99E5A35fFc58");
 
   // if you want to instantiate a version of a contract at a specific address!
   // const yourContract = await ethers.getContractAt('YourContract', "0xaAC799eC2d00C013f1F11c37E654e59B0429DF6A");
